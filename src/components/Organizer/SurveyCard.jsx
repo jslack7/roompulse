@@ -1,9 +1,9 @@
 
-function SurveyCard() {
+function SurveyCard({ title }) {
   return (
     <div>
-      <h2>Survey Card</h2>
-      <p>Survey information will appear here.</p>
+      <h3>{title}</h3>
+      <p>Manage your presentation here.</p>
     </div>
   );
 }
