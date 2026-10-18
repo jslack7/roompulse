@@ -54,7 +54,9 @@ function OrganizerDashboard() {
             </div>
             <section className={styles.presentations}>
                 <h2>My Presentations</h2>
-                <QuestionForm />
+                {presentations.length > 0 && (
+                    <QuestionForm presentationId={presentations[0].id} />
+                )}
                 {authMessage && <p>{authMessage}</p>}
                 {fetchError && <p role="alert">{fetchError}</p>}
                 {isLoading && <LoadingSpinner />}
