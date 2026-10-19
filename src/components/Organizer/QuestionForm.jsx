@@ -42,6 +42,10 @@ function QuestionForm({ presentationId }) {
       alert("Please enter a question.");
       return;
     }
+    if (choices.length < 2) {
+      alert("Please provide at least two answer choices.");
+      return;
+    }
     if (choices.some((choice) => choice.trim() === "")) {
       alert("Please fill in all answer choices.");
       return;
@@ -55,37 +59,18 @@ function QuestionForm({ presentationId }) {
     
 
   
-    const { data, error } = await supabase 
-      .from("questions")
-      .insert({
-        presentation_id: presentationId,
-        text: questionText.trim(),
-        type: "multiple_choice",
-        is_open: false,
-      })
-        .select()
-        .single();
+    const { data, error } = await supabase.rpc(
+      "create_question_with_choices",
+      {
+        p_presentation_id: presentationId,
+        p_question_text: questionText.trim(),
+        p_choices: choices.map((choice) => choice.trim()),
+      }
+    );
+      
     if (error) {
       console.error("Error saving question:", error);
       alert("Unable to save the question. Please try again.");
-      return;
-    }
-
-    const choicesToSave = choices.map((choice, index) => {
-      return {
-        question_id: data.id,
-        label: choice.trim(),
-        position: index,
-      };
-    });
-
-    const { error: choicesError } = await supabase
-      .from("choices")
-      .insert(choicesToSave);
-
-    if (choicesError) {
-      console.error("Error saving answer choices:", choicesError);
-      alert("The question was saved, but its answer choices could not be saved.");
       return;
     }
 
