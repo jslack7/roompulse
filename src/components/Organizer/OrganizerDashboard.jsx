@@ -5,13 +5,33 @@ import SurveyCard from "./SurveyCard";
 import { supabase } from "../../services/supabaseClient";
 import LoadingSpinner from "../Shared/LoadingSpinner";
 import QuestionForm from "./QuestionForm";
+import SessionControls from "./SessionControls";
+import QuestionList from "./QuestionList";
 
 function OrganizerDashboard() {
     const [showForm, setShowForm] = useState(false);
+    const [selectedPresentationId, setSelectedPresentationId] = useState(null);
+    const [questionRefreshKey, setQuestionRefreshKey] = useState(0);
     const [presentations, setPresentations] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [authMessage, setAuthMessage] = useState("");
     const [fetchError, setFetchError] = useState("");
+
+    function handlePresentationCreated(newPresentation) {
+       setPresentations((previousPresentations) => {
+        const alreadyExists = previousPresentations.some(
+            (presentation) => presentation.id === newPresentation.id
+        );
+
+        if (alreadyExists) {
+            return previousPresentations;
+        }
+
+        return [...previousPresentations, newPresentation];
+       });
+
+       setShowForm(false);
+    }
 
     useEffect(() => {
         async function fetchPresentations() {
@@ -25,14 +45,10 @@ function OrganizerDashboard() {
                 return;
             }
 
-            console.log("Signed-in organizer ID:", userData.user.id);
             const { data, error } = await supabase
                 .from("presentations")
                 .select("*")
                 .eq("owner_id", userData.user.id);
-
-            console.log("Presentations:", data);
-            console.log("Error:", error);
 
             if (error) {
                 setFetchError("Unable to load presentations. Please try again.");
@@ -54,9 +70,31 @@ function OrganizerDashboard() {
             </div>
             <section className={styles.presentations}>
                 <h2>My Presentations</h2>
-                {presentations.length > 0 && (
-                    <QuestionForm presentationId={presentations[0].id} />
+                
+                {selectedPresentationId && (
+                    <div>
+                        <QuestionForm presentationId={selectedPresentationId} />
+
+                        <QuestionList
+                            key={`${selectedPresentationId}-${questionRefreshKey}`} 
+                            presentationId={selectedPresentationId} />
+
+                        <SessionControls 
+                            key={selectedPresentationId}
+                            presentationId={selectedPresentationId}
+                            initialIsLive={
+                                presentations.find(
+                                    (presentation) => 
+                                        presentation.id === selectedPresentationId
+                                )?.is_live ?? false
+                            }
+                            onSessionChange={() => {
+                                setQuestionRefreshKey((previous) => previous + 1);
+                            }}
+                        />
+                    </div>
                 )}
+                
                 {authMessage && <p>{authMessage}</p>}
                 {fetchError && <p role="alert">{fetchError}</p>}
                 {isLoading && <LoadingSpinner />}
@@ -66,10 +104,16 @@ function OrganizerDashboard() {
                     <p>You haven't created any presentations yet.</p>
                 )}
                 {presentations.map((presentation) => (
-                    <SurveyCard 
-                        key={presentation.id}
-                        title={presentation.title}
-                    />
+                    <div key={presentation.id}>
+                        <SurveyCard title={presentation.title} />
+
+                        <button
+                            type="button"
+                            onClick={() => setSelectedPresentationId(presentation.id)}
+                        >
+                            Add Questions
+                        </button>
+                    </div>
                 ))}
 
                 {!showForm && !authMessage && (
@@ -82,7 +126,10 @@ function OrganizerDashboard() {
                 )}   
 
                 {showForm && (
-                    <SurveyForm onCancel={() => setShowForm(false)} />
+                    <SurveyForm 
+                        onCancel={() => setShowForm(false)}
+                        onPresentationCreated={handlePresentationCreated} 
+                    />
                 )}
             </section>
         </div>

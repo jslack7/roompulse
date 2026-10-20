@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { supabase } from "../../services/supabaseClient";
 
-function SurveyForm({ onCancel }) {
+function SurveyForm({ onCancel, onPresentationCreated }) {
   const [title, setTitle] = useState("");
 
   async function handleSubmit(event) {
@@ -16,11 +16,36 @@ function SurveyForm({ onCancel }) {
 
     if (error || !data.user) {
       alert("Please sign in before creating a presentation.");
+      return;
     }
 
     console.log("Organizer ID:", data.user.id);
     console.log("Presentation title:", title);
+
+
+    const { data: newPresentation, error: saveError } = await supabase
+      .from("presentations")
+      .insert({
+        title: title.trim(),
+        owner_id: data.user.id,
+      })
+      .select()
+      .single();
+    
+    if (saveError) {
+      console.error("Error creating presentation:", saveError);
+      alert("Unable to create presentation. Please try again.");
+      return;
+    }
+
+    console.log("presentation created:", newPresentation);
+    alert("Presentation created sucessfully!");
+    setTitle("");
+    onPresentationCreated(newPresentation);
+
   }
+
+
 
   return (
    <form onSubmit={handleSubmit}>
