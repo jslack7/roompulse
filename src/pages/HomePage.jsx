@@ -1,11 +1,13 @@
+import { Link } from "react-router-dom";
 
-function HomePage() {
+export default function HomePage() {
   return (
-    <main>
-      <h1>Welcome to RoomPulse</h1>
-      <p>Feel the pulse of the room.</p>
-    </main>
+    <div style={{ padding: 20, background: "lightgreen" }}>
+      <h1>Roompulse Home</h1>
+      <p>If you see this, routing with your pages works.</p>
+      <p>
+        <Link to="/login">Go to Login</Link>
+      </p>
+    </div>
   );
 }
-
-export default HomePage;
