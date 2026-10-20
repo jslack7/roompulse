@@ -83,19 +83,41 @@ function ParticipantVoting({ presentationId }) {
 
       if (!isActive) return;
 
-      
       if (choicesError) {
         setError("Unable to load answer choices.");
       } else {
-        setQuestion((previousQuestion) => {
-          if (previousQuestion?.id !== questionData.id) {
-            setSelectedChoiceId("");
-            setHasVoted(false);
-          }
+        const { data: userData, error: userError } =
+          await supabase.auth.getUser();
 
-          return questionData;
-        });
+        if (!isActive) return;
 
+        if (userError || !userData.user) {
+          setError("Unable to verify participant.");
+          setIsLoading(false);
+          return;
+        }
+
+        const { data: existingVote, error: voteCheckError } =
+          await supabase
+            .from("votes")
+            .select("id")
+            .eq("question_id", questionData.id)
+            .eq("voter_id", userData.user.id)
+            .maybeSingle();
+        if (!isActive) return;
+
+        if (voteCheckError) {
+          console.error("Error checking vote:", voteCheckError);
+          setError("Unable to check your voting status.")
+          setIsLoading(false);
+          return;
+        }
+
+        setSelectedChoiceId("");
+
+        setHasVoted(Boolean(existingVote));
+
+        setQuestion(questionData);
         setChoices(choicesData ?? []);
       }
 

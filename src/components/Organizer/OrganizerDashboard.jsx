@@ -3,19 +3,36 @@ import styles from "./OrganizerDashboard.module.css";
 import SurveyForm from "./SurveyForm";
 import SurveyCard from "./SurveyCard";
 import { supabase } from "../../services/supabaseClient";
+import { useNavigate } from "react-router-dom";
 import LoadingSpinner from "../Shared/LoadingSpinner";
 import QuestionForm from "./QuestionForm";
 import SessionControls from "./SessionControls";
 import QuestionList from "./QuestionList";
+import ResultsChart from "../Shared/ResultsChart";
 
 function OrganizerDashboard() {
+    const navigate = useNavigate();
+
     const [showForm, setShowForm] = useState(false);
     const [selectedPresentationId, setSelectedPresentationId] = useState(null);
     const [questionRefreshKey, setQuestionRefreshKey] = useState(0);
+    const [activeQuestionId, setActiveQuestionId] = useState(null);
     const [presentations, setPresentations] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [authMessage, setAuthMessage] = useState("");
     const [fetchError, setFetchError] = useState("");
+
+    async function handleLogout() {
+        const { error } = await supabase.auth.signOut();
+
+        if (error) {
+            console.error("Logout error:", error);
+            alert("Unable to log out. Please try again.");
+            return;
+    }
+
+  navigate("/login", { replace: true });
+}
 
     function handlePresentationCreated(newPresentation) {
        setPresentations((previousPresentations) => {
@@ -67,6 +84,9 @@ function OrganizerDashboard() {
             <div className={styles.heading}>
                 <h1>Organizer Dashboard</h1>
                 <p>Welcome to RoomPulse! Manage your surveys here.</p>
+                <button type="button" onClick={handleLogout}>
+                    Log Out
+                </button>
             </div>
             <section className={styles.presentations}>
                 <h2>My Presentations</h2>

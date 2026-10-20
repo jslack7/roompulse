@@ -1,8 +1,10 @@
 import { useState } from "react";
 import { supabase } from "../services/supabaseClient";
+import { useNavigate } from "react-router-dom";
 
 
 function LoginPage() {
+    const navigate = useNavigate();
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -27,7 +29,8 @@ function LoginPage() {
             }
 
             console.log("Organizer signed in:", data.user?.id);
-            alert("Login successful!");
+
+            navigate("/dashboard", { replace: true });
         }   catch (error) {
             console.error("Unexpected login error:", error);
         }   finally {
