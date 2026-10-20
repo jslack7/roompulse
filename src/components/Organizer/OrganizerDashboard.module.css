@@ -1,11 +1,107 @@
+
+/* =========================================
+   RoomPulse - Organizer Dashboard
+   ========================================= */
+
 .dashboard {
-    padding: 30px;
+  width: 100%;
+  max-width: 1050px;
+  margin: 0 auto;
+  padding: 48px 32px;
 }
+
+/* Dashboard Heading */
 
 .heading {
-    margin-bottom: 30px;
+  margin-bottom: 36px;
+  text-align: center;
 }
 
+.heading h1 {
+  color: var(--color-primary);
+  font-size: 2.5rem;
+  font-weight: 800;
+  letter-spacing: -1px;
+  margin-bottom: 12px;
+}
+
+.heading p {
+  color: var(--color-text-muted);
+  font-size: 1rem;
+  line-height: 1.7;
+  text-align: center;
+}
+
+/* Presentations Section */
+
 .presentations {
-    margin-top: 40px;
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--card-radius);
+  box-shadow: var(--shadow-card);
+  padding: 32px;
+}
+
+.presentations h2 {
+  color: var(--color-primary);
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 24px;
+}
+
+/* Presentation Buttons */
+
+.presentations button {
+  background-color: var(--color-secondary);
+  color: #FFFFFF;
+  border: none;
+  border-radius: var(--border-radius);
+  padding: 12px 20px;
+  font-family: var(--sans);
+  font-weight: 600;
+  font-size: 0.95rem;
+  margin: 8px 8px 8px 0;
+  cursor: pointer;
+  transition:
+    background-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.presentations button:hover:not(:disabled) {
+  background-color: #2563EB;
+  transform: translateY(-1px);
+}
+
+.presentations button:disabled {
+  background-color: #CBD5E1;
+  color: #475569;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Presentation Card Containers */
+
+.presentations > div {
+  margin-bottom: 24px;
+}
+
+/* Responsive Design */
+
+@media (max-width: 768px) {
+  .dashboard {
+    padding: 24px 16px;
+  }
+
+  .heading h1 {
+    font-size: 2rem;
+  }
+
+  .presentations {
+    padding: 20px;
+  }
+
+  .presentations button {
+    width: 100%;
+    margin: 8px 0;
+  }
 }

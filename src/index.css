@@ -1,111 +1,193 @@
-:root {
-  --text: #6b6375;
-  --text-h: #08060d;
-  --bg: #fff;
-  --border: #e5e4e7;
-  --code-bg: #f4f3ec;
-  --accent: #aa3bff;
-  --accent-bg: rgba(170, 59, 255, 0.1);
-  --accent-border: rgba(170, 59, 255, 0.5);
-  --social-bg: rgba(244, 243, 236, 0.5);
-  --shadow:
-    rgba(0, 0, 0, 0.1) 0 10px 15px -3px, rgba(0, 0, 0, 0.05) 0 4px 6px -2px;
 
-  --sans: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --heading: system-ui, 'Segoe UI', Roboto, sans-serif;
+/* =========================================
+   RoomPulse - Global Design System
+   ========================================= */
+
+@import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap");
+
+:root {
+  /* Brand Colors */
+  --color-primary: #172554;
+  --color-secondary: #3B82F6;
+  --color-lavender: #A78BFA;
+  --color-mint: #5EEAD4;
+
+  /* Background Colors */
+  --color-background: #F8FAFC;
+  --color-surface: #FFFFFF;
+
+  /* Text Colors */
+  --color-text: #1E293B;
+  --color-text-muted: #64748B;
+
+  /* Borders */
+  --color-border: #E2E8F0;
+
+  /* Status Colors */
+  --color-success: #059669;
+  --color-error: #DC2626;
+
+  /* Reusable Design */
+  --border-radius: 12px;
+  --card-radius: 16px;
+  --shadow-card: 0 4px 16px rgba(23, 37, 84, 0.08);
+
+  /* Compatibility with existing styles */
+  --text: var(--color-text);
+  --text-h: var(--color-primary);
+  --bg: var(--color-background);
+  --border: var(--color-border);
+  --code-bg: #EFF6FF;
+  --accent: var(--color-secondary);
+  --accent-bg: rgba(59, 130, 246, 0.1);
+  --accent-border: rgba(59, 130, 246, 0.5);
+  --social-bg: #F1F5F9;
+  --shadow: var(--shadow-card);
+
+  /* Typography */
+  --sans: "Plus Jakarta Sans", Arial, Helvetica, sans-serif;
+  --heading: "Plus Jakarta Sans", Arial, Helvetica, sans-serif;
   --mono: ui-monospace, Consolas, monospace;
 
-  font: 18px/145% var(--sans);
-  letter-spacing: 0.18px;
-  color-scheme: light dark;
-  color: var(--text);
-  background: var(--bg);
+  font-family: var(--sans);
+  font-size: 16px;
+  line-height: 1.5;
+  color: var(--color-text);
+  background-color: var(--color-background);
+
+  color-scheme: light;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-
-  @media (max-width: 1024px) {
-    font-size: 16px;
-  }
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --text: #9ca3af;
-    --text-h: #f3f4f6;
-    --bg: #16171d;
-    --border: #2e303a;
-    --code-bg: #1f2028;
-    --accent: #c084fc;
-    --accent-bg: rgba(192, 132, 252, 0.15);
-    --accent-border: rgba(192, 132, 252, 0.5);
-    --social-bg: rgba(47, 48, 58, 0.5);
-    --shadow:
-      rgba(0, 0, 0, 0.4) 0 10px 15px -3px, rgba(0, 0, 0, 0.25) 0 4px 6px -2px;
-  }
+/* =========================================
+   Global Reset
+   ========================================= */
 
-  #social .button-icon {
-    filter: invert(1) brightness(2);
-  }
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
 }
 
 body {
   margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  background-color: var(--color-background);
+  color: var(--color-text);
 }
+
+/* =========================================
+   React Root
+   ========================================= */
 
 #root {
-  width: 1126px;
-  max-width: 100%;
-  margin: 0 auto;
-  text-align: center;
-  border-inline: 1px solid var(--border);
-  min-height: 100svh;
-  display: flex;
-  flex-direction: column;
-  box-sizing: border-box;
+  width: 100%;
+  min-height: 100vh;
 }
 
+/* =========================================
+   Typography
+   ========================================= */
+
 h1,
-h2 {
+h2,
+h3,
+h4 {
   font-family: var(--heading);
-  font-weight: 500;
-  color: var(--text-h);
+  color: var(--color-primary);
+  line-height: 1.25;
 }
 
 h1 {
-  font-size: 56px;
-  letter-spacing: -1.68px;
-  margin: 32px 0;
-  @media (max-width: 1024px) {
-    font-size: 36px;
-    margin: 20px 0;
-  }
-}
-h2 {
-  font-size: 24px;
-  line-height: 118%;
-  letter-spacing: -0.24px;
-  margin: 0 0 8px;
-  @media (max-width: 1024px) {
-    font-size: 20px;
-  }
-}
-p {
-  margin: 0;
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin: 0 0 1rem;
 }
 
-code,
-.counter {
-  font-family: var(--mono);
-  display: inline-flex;
-  border-radius: 4px;
-  color: var(--text-h);
+h2 {
+  font-size: 1.75rem;
+  font-weight: 600;
+  margin: 0 0 0.75rem;
 }
+
+h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+p {
+  margin: 0 0 1rem;
+}
+
+/* =========================================
+   Buttons
+   ========================================= */
+
+button {
+  font-family: inherit;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  border-radius: var(--border-radius);
+  transition: background-color 0.2s ease;
+}
+
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* =========================================
+   Form Elements
+   ========================================= */
+
+input,
+select,
+textarea {
+  font-family: inherit;
+  font-size: 1rem;
+}
+
+/* =========================================
+   Links
+   ========================================= */
+
+a {
+  color: var(--color-secondary);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* =========================================
+   Code
+   ========================================= */
 
 code {
-  font-size: 15px;
-  line-height: 135%;
+  font-family: var(--mono);
+  font-size: 0.9rem;
   padding: 4px 8px;
-  background: var(--code-bg);
+  border-radius: 4px;
+  color: var(--color-primary);
+  background-color: var(--code-bg);
+}
+
+/* =========================================
+   Responsive Typography
+   ========================================= */
+
+@media (max-width: 768px) {
+  h1 {
+    font-size: 2rem;
+  }
+
+  h2 {
+    font-size: 1.5rem;
+  }
 }
