@@ -3,8 +3,12 @@ import { useState, useEffect } from "react";
 import OrganizerDashboard from "./components/Organizer/OrganizerDashboard";
 import LoginPage from "./pages/LoginPage";
 import { supabase } from "./services/supabaseClient";
+import ParticipantJoin from "./components/participant/ParticipantJoin";
 
 function App() {
+  const isParticipantView =
+    new URLSearchParams(window.location.search).get("view") ===
+  "participant";
   const [user, setUser] = useState(null);
   const [isCheckingAuth, setIsCheckingAuth] = useState(true);
 
@@ -30,6 +34,10 @@ function App() {
       subscription.unsubscribe();
     };
   }, []);
+
+  if (isParticipantView) {
+    return <ParticipantJoin />
+  }
 
   if (isCheckingAuth) {
     return <p>Checking login status...</p>;
