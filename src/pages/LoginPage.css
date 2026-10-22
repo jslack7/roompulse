@@ -124,26 +124,43 @@
   .login-title {
     font-size: 26px;
   }
+}
 
 
 .login-switch {
-  margin-top: 20px;
+  margin-top: 22px;
   text-align: center;
   color: #625d78;
-  font-size: 14px;
+  font-size: 0.9rem;
 }
 
 .login-switch-button {
-  background: none;
-  border: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 14px;
+  margin-left: 4px;
+  background-color: #f0ebff;
   color: #7255f6;
-  font: inherit;
+  border: 1px solid #d9ceff;
+  border-radius: 10px;
+  font-family: inherit;
+  font-size: 0.9rem;
   font-weight: 700;
+  line-height: 1.4;
   cursor: pointer;
+  transition: all 0.2s ease;
 }
 
 .login-switch-button:hover {
-  text-decoration: underline;
+  background-color: #7255f6;
+  border-color: #7255f6;
+  color: #ffffff;
+  transform: translateY(-1px);
+}
+
+.login-switch-button:active {
+  transform: translateY(0);
 }
 
 .login-switch-button:disabled {
@@ -158,6 +175,4 @@
   color: #176b57;
   font-size: 14px;
   text-align: center;
-}
-
 }

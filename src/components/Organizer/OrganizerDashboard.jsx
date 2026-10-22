@@ -199,6 +199,15 @@ function OrganizerDashboard() {
               >
                 Manage Presentation
               </button>
+
+              <button
+                className={styles.openPresentationButton}
+                type="button"
+                onClick={() => navigate(`/present/${presentation.id}`)}
+              >
+                Open Presentation
+              </button>
+
             </div>
           ))}
         </div>

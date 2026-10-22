@@ -227,4 +227,35 @@
   .formSection {
     padding: 16px;
   }
+
+
+
+.openPresentationButton {
+  display: block;
+  width: 100%;
+  margin-top: 12px;
+  padding: 12px 18px;
+  background: #7255f6;
+  color: #ffffff;
+  border: 2px solid #7255f6;
+  border-radius: 12px;
+  font-family: inherit;
+  font-size: 0.95rem;
+  font-weight: 600;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.openPresentationButton:hover {
+  background: #5e43dc;
+  border-color: #5e43dc;
+  transform: translateY(-2px);
+}
+
+.openPresentationButton:active {
+  transform: translateY(0);
+}
+
+
 }
