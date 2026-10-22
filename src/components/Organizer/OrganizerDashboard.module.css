@@ -206,6 +206,7 @@
   }
 }
 
+
 @media (max-width: 480px) {
   .sectionHeader {
     align-items: stretch;
@@ -227,8 +228,7 @@
   .formSection {
     padding: 16px;
   }
-
-
+}
 
 .openPresentationButton {
   display: block;
@@ -255,7 +255,4 @@
 
 .openPresentationButton:active {
   transform: translateY(0);
-}
-
-
 }
