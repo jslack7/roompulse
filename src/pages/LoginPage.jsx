@@ -10,35 +10,61 @@ function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [loginError, setLoginError] = useState("");
+  const [isSignUp, setIsSignUp] = useState(false);
+  const [authError, setAuthError] = useState("");
+  const [authMessage, setAuthMessage] = useState("");
 
-  async function handleLogin(event) {
+  async function handleSubmit(event) {
     event.preventDefault();
 
-    setLoginError("");
+    setAuthError("");
+    setAuthMessage("");
     setIsLoading(true);
 
     try {
-      const { data, error } =
-        await supabase.auth.signInWithPassword({
+      if (isSignUp) {
+        const { data, error } = await supabase.auth.signUp({
           email: email.trim(),
-          password: password,
+          password,
         });
 
-      if (error) {
-        setLoginError(error.message);
-        return;
+        if (error) {
+          setAuthError(error.message);
+          return;
+        }
+
+        if (data.session) {
+          navigate("/dashboard", { replace: true });
+        } else {
+          setAuthMessage(
+            "Check your email for a confirmation link, then return to sign in."
+          );
+        }
+      } else {
+        const { error } = await supabase.auth.signInWithPassword({
+          email: email.trim(),
+          password,
+        });
+
+        if (error) {
+          setAuthError(error.message);
+          return;
+        }
+
+        navigate("/dashboard", { replace: true });
       }
-
-      console.log("Organizer signed in:", data.user?.id);
-
-      navigate("/dashboard", { replace: true });
     } catch (error) {
-      console.error("Unexpected login error:", error);
-      setLoginError("Something went wrong. Please try again.");
+      console.error("Authentication error:", error);
+      setAuthError("Something went wrong. Please try again.");
     } finally {
       setIsLoading(false);
     }
+  }
+
+  function toggleAuthMode() {
+    setIsSignUp(!isSignUp);
+    setAuthError("");
+    setAuthMessage("");
   }
 
   return (
@@ -46,13 +72,17 @@ function LoginPage() {
       <div className="login-card">
         <div className="login-brand">RoomPulse</div>
 
-        <h1 className="login-title">Welcome Back</h1>
+        <h1 className="login-title">
+          {isSignUp ? "Create Your Account" : "Welcome Back"}
+        </h1>
 
         <p className="login-description">
-          Sign in to manage your presentations.
+          {isSignUp
+            ? "Sign up to create and manage interactive presentations."
+            : "Sign in to manage your presentations."}
         </p>
 
-        <form className="login-form" onSubmit={handleLogin}>
+        <form className="login-form" onSubmit={handleSubmit}>
           <label className="login-label" htmlFor="email">
             Email
           </label>
@@ -78,12 +108,19 @@ function LoginPage() {
             placeholder="Enter your password"
             value={password}
             onChange={(event) => setPassword(event.target.value)}
+            minLength={6}
             required
           />
 
-          {loginError && (
+          {authError && (
             <p className="login-error" role="alert">
-              {loginError}
+              {authError}
+            </p>
+          )}
+
+          {authMessage && (
+            <p className="login-success" role="status">
+              {authMessage}
             </p>
           )}
 
@@ -92,9 +129,29 @@ function LoginPage() {
             type="submit"
             disabled={isLoading}
           >
-            {isLoading ? "Signing In..." : "Sign In"}
+            {isLoading
+              ? isSignUp
+                ? "Creating Account..."
+                : "Signing In..."
+              : isSignUp
+                ? "Create Account"
+                : "Sign In"}
           </button>
         </form>
+
+        <p className="login-switch">
+          {isSignUp
+            ? "Already have an account?"
+            : "Don't have an account?"}{" "}
+          <button
+            type="button"
+            className="login-switch-button"
+            onClick={toggleAuthMode}
+            disabled={isLoading}
+          >
+            {isSignUp ? "Sign In" : "Create Account"}
+          </button>
+        </p>
 
         <Link className="login-back" to="/">
           ← Back to Home

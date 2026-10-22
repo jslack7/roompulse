@@ -124,4 +124,40 @@
   .login-title {
     font-size: 26px;
   }
+
+
+.login-switch {
+  margin-top: 20px;
+  text-align: center;
+  color: #625d78;
+  font-size: 14px;
+}
+
+.login-switch-button {
+  background: none;
+  border: none;
+  color: #7255f6;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.login-switch-button:hover {
+  text-decoration: underline;
+}
+
+.login-switch-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.login-success {
+  padding: 12px;
+  border-radius: 10px;
+  background-color: #e8faf5;
+  color: #176b57;
+  font-size: 14px;
+  text-align: center;
+}
+
 }
