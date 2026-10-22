@@ -188,26 +188,42 @@ function OrganizerDashboard() {
             >
               <SurveyCard title={presentation.title} />
 
+              
               <button
                 className={styles.manageButton}
                 type="button"
                 onClick={() => {
-                  setSelectedPresentationId(presentation.id);
-                  setActiveQuestionId(null);
-                  fetchActiveQuestion(presentation.id);
+                  if (selectedPresentationId === presentation.id) {
+                    setSelectedPresentationId(null);
+                    setActiveQuestionId(null);
+                  } else {
+                    setSelectedPresentationId(presentation.id);
+                    setActiveQuestionId(null);
+                    fetchActiveQuestion(presentation.id);
+                  }
                 }}
               >
-                Manage Presentation
+              {selectedPresentationId === presentation.id
+                ? "Close Management"
+                : "Manage Presentation"}
               </button>
 
+
+              
               <button
                 className={styles.openPresentationButton}
                 type="button"
-                onClick={() => navigate(`/present/${presentation.id}`)}
+                onClick={() => {
+                  window.open(
+                  `/present/${presentation.id}`,
+                  "_blank",
+                  "noopener,noreferrer"
+                  );
+                }}
               >
                 Open Presentation
               </button>
-
+              
             </div>
           ))}
         </div>
