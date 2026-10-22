@@ -1,0 +1,159 @@
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+  padding: 24px;
+  border: 1px solid var(--color-border);
+  border-radius: 16px;
+  background: #ffffff;
+}
+
+.title {
+  margin: 0 0 4px;
+  color: var(--color-text);
+  font-family: var(--heading);
+  font-size: 21px;
+  font-weight: 800;
+}
+
+.label {
+  display: block;
+  margin-bottom: 8px;
+  color: var(--color-text);
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.input {
+  width: 100%;
+  min-width: 0;
+  padding: 13px 15px;
+  border: 1px solid var(--color-border);
+  border-radius: 11px;
+  background: #ffffff;
+  color: var(--color-text);
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.input:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(114, 85, 246, 0.12);
+}
+
+.input::placeholder {
+  color: #9999aa;
+}
+
+.choicesTitle {
+  margin: 8px 0 0;
+  color: var(--color-text);
+  font-family: var(--heading);
+  font-size: 17px;
+  font-weight: 800;
+}
+
+.choicesList {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.choiceRow {
+  padding: 16px;
+  border: 1px solid #eae6ff;
+  border-radius: 12px;
+  background: #fcfbff;
+}
+
+.choiceControls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.removeButton {
+  flex-shrink: 0;
+  padding: 12px 16px;
+  border: 1px solid #f1d5dc;
+  border-radius: 10px;
+  background: #fff5f7;
+  color: #bd4264;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.removeButton:hover:not(:disabled) {
+  background: #ffe7ee;
+}
+
+.removeButton:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.addButton {
+  padding: 12px 20px;
+  border: 1px solid #ddd5ff;
+  border-radius: 11px;
+  background: #f0ecff;
+  color: var(--color-primary);
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.addButton:hover {
+  background: #e5deff;
+}
+
+.saveButton {
+  padding: 12px 22px;
+  border: 1px solid var(--color-primary);
+  border-radius: 11px;
+  background: var(--color-primary);
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 700;
+  box-shadow: 0 7px 18px rgba(114, 85, 246, 0.16);
+}
+
+.saveButton:hover:not(:disabled) {
+  background: #5940d9;
+  transform: translateY(-2px);
+}
+
+.saveButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+@media (max-width: 600px) {
+  .form {
+    padding: 18px;
+  }
+
+  .choiceControls {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .actions {
+    flex-direction: column;
+  }
+
+  .addButton,
+  .saveButton,
+  .removeButton {
+    width: 100%;
+  }
+}

@@ -1,6 +1,7 @@
 
 import { useEffect, useState } from "react";
 import { supabase } from "../../services/supabaseClient";
+import styles from "./QuestionList.module.css";
 
 function QuestionList({ presentationId }) {
   const [questions, setQuestions] = useState([]);
@@ -77,43 +78,71 @@ function QuestionList({ presentationId }) {
     };
   }, [presentationId]);
 
+  
   if (isLoading) {
-    return <p>Loading questions...</p>;
+    return (
+      <p className={styles.loadingMessage}>
+        Loading questions...
+      </p>
+    );
   }
 
   if (error) {
-    return <p role="alert">{error}</p>;
+    return (
+      <p className={styles.errorMessage} role="alert">
+        {error}
+      </p>
+    );
   }
 
   return (
-    <div>
-      <h3>Saved Questions</h3>
+    <div className={styles.container}>
+      <h3 className={styles.title}>Saved Questions</h3>
 
       {questions.length === 0 ? (
-        <p>No questions have been added yet.</p>
+        <p className={styles.emptyState}>
+          No questions have been added yet.
+        </p>
       ) : (
-        <ul>
+        <ul className={styles.questionList}>
           {questions.map((question) => (
-            <li key={question.id}>
-                <p>{question.text}</p>
-
-                <p>
-                    Status: {question.is_open ? "Open" : "Closed"}
+            <li
+              className={styles.questionCard}
+              key={question.id}
+            >
+              <div className={styles.questionHeader}>
+                <p className={styles.questionText}>
+                  {question.text}
                 </p>
 
-                <button 
-                    type="button"
-                    disabled={
-                        activatingQuestionId !== null || question.is_open
-                    }
-                    onClick={() => handleActivateQuestion(question.id)}
+                <span
+                  className={
+                    question.is_open
+                      ? styles.statusOpen
+                      : styles.statusClosed
+                  }
                 >
-                    {activatingQuestionId === question.id
-                        ? "Activating..."
-                        : question.is_open
-                            ? "Question Open"
-                            : "Activate Question"}   
-                </button>
+                  {question.is_open ? "Open" : "Closed"}
+                </span>
+              </div>
+
+              <button
+                className={styles.activateButton}
+                type="button"
+                disabled={
+                  activatingQuestionId !== null ||
+                  question.is_open
+                }
+                onClick={() =>
+                  handleActivateQuestion(question.id)
+                }
+              >
+                {activatingQuestionId === question.id
+                  ? "Activating..."
+                  : question.is_open
+                    ? "Question Open"
+                    : "Activate Question"}
+              </button>
             </li>
           ))}
         </ul>
@@ -121,5 +150,6 @@ function QuestionList({ presentationId }) {
     </div>
   );
 }
+
 
 export default QuestionList;

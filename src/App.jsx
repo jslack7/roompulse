@@ -6,9 +6,10 @@ import {
   Navigate,
 } from "react-router-dom";
 
+import HomePage from "./pages/HomePage";
+import LoginPage from "./pages/LoginPage";
 import OrganizerDashboard from "./components/Organizer/OrganizerDashboard";
 import ParticipantJoin from "./components/participant/ParticipantJoin";
-import LoginPage from "./pages/LoginPage";
 import PresentationPage from "./pages/PresentationPage";
 import { supabase } from "./services/supabaseClient";
 
@@ -16,7 +17,7 @@ function App() {
   const [user, setUser] = useState(null);
   const [isCheckingAuth, setIsCheckingAuth] = useState(true);
 
-  // Check the current Supabase session
+  
   useEffect(() => {
     supabase.auth.getUser().then(({ data, error }) => {
       if (!error) {
@@ -36,30 +37,22 @@ function App() {
     return () => subscription.unsubscribe();
   }, []);
 
-  // Wait until authentication has been checked
+  
   if (isCheckingAuth) {
     return <p>Checking login status...</p>;
   }
 
-  // Anonymous participants are not organizers
+  
   const isOrganizer = Boolean(
     user && !user.is_anonymous
   );
 
   return (
     <Routes>
-      {/* Default page */}
-      <Route
-        path="/"
-        element={
-          <Navigate
-            to={isOrganizer ? "/dashboard" : "/login"}
-            replace
-          />
-        }
-      />
-
-      {/* Organizer login */}
+      
+      <Route path="/" element={<HomePage />} />
+      
+      
       <Route
         path="/login"
         element={
@@ -69,7 +62,7 @@ function App() {
         }
       />
 
-      {/* Private organizer dashboard */}
+      
       <Route
         path="/dashboard"
         element={
@@ -79,13 +72,13 @@ function App() {
         }
       />
 
-      {/* Public participant page */}
+     
       <Route
         path="/join"
         element={<ParticipantJoin />}
       />
 
-      {/* Presentation screen */}
+    
       <Route
         path="/present/:id"
         element={
@@ -95,7 +88,7 @@ function App() {
         }
       />
 
-      {/* Unknown URLs */}
+      
       <Route
         path="*"
         element={<Navigate to="/" replace />}

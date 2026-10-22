@@ -1,107 +1,230 @@
 
-/* =========================================
-   RoomPulse - Organizer Dashboard
-   ========================================= */
-
 .dashboard {
   width: 100%;
-  max-width: 1050px;
+  max-width: 1160px;
   margin: 0 auto;
-  padding: 48px 32px;
+  padding: 48px 32px 80px;
 }
 
-/* Dashboard Heading */
-
 .heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 24px;
   margin-bottom: 36px;
-  text-align: center;
 }
 
 .heading h1 {
-  color: var(--color-primary);
-  font-size: 2.5rem;
+  margin-bottom: 10px;
+  color: var(--color-text);
+  font-size: clamp(30px, 4vw, 40px);
   font-weight: 800;
-  letter-spacing: -1px;
-  margin-bottom: 12px;
+  letter-spacing: -1.5px;
 }
 
 .heading p {
+  margin: 0;
   color: var(--color-text-muted);
-  font-size: 1rem;
-  line-height: 1.7;
-  text-align: center;
+  font-size: 14px;
+  line-height: 1.8;
 }
 
-/* Presentations Section */
+.logoutButton {
+  flex-shrink: 0;
+  padding: 12px 22px;
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
+  background: #ffffff;
+  color: var(--color-text);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.logoutButton:hover {
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+  background: #f8f7ff;
+}
 
 .presentations {
-  background-color: var(--color-surface);
-  border: 1px solid var(--color-border);
-  border-radius: var(--card-radius);
-  box-shadow: var(--shadow-card);
   padding: 32px;
+  border: 1px solid var(--color-border);
+  border-radius: 19px;
+  background: var(--color-surface);
+  box-shadow: var(--shadow-card);
 }
 
-.presentations h2 {
-  color: var(--color-primary);
-  font-size: 1.5rem;
-  font-weight: 700;
-  margin-bottom: 24px;
+.sectionHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 28px;
 }
 
-/* Presentation Buttons */
+.sectionHeader h2 {
+  margin: 0;
+  color: var(--color-text);
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: -0.8px;
+}
 
-.presentations button {
-  background-color: var(--color-secondary);
-  color: #FFFFFF;
-  border: none;
-  border-radius: var(--border-radius);
-  padding: 12px 20px;
-  font-family: var(--sans);
-  font-weight: 600;
-  font-size: 0.95rem;
-  margin: 8px 8px 8px 0;
-  cursor: pointer;
+.presentationGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.presentationCard {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 20px;
+  min-width: 0;
+  padding: 24px;
+  border: 1px solid var(--color-border);
+  border-radius: 16px;
+  background: #ffffff;
   transition:
-    background-color 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
     transform 0.2s ease;
 }
 
-.presentations button:hover:not(:disabled) {
-  background-color: #2563EB;
-  transform: translateY(-1px);
+.presentationCard:hover {
+  transform: translateY(-3px);
+  border-color: #d8d0ff;
+  box-shadow: 0 14px 32px rgba(52, 38, 110, 0.08);
 }
 
-.presentations button:disabled {
-  background-color: #CBD5E1;
-  color: #475569;
+.selectedCard {
+  border-color: var(--color-primary);
+  background: #fcfbff;
+}
+
+.primaryButton,
+.manageButton {
+  padding: 12px 20px;
+  border: 1px solid var(--color-primary);
+  border-radius: 11px;
+  background: var(--color-primary);
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 700;
+  box-shadow: 0 7px 18px rgba(114, 85, 246, 0.16);
+}
+
+.primaryButton:hover:not(:disabled),
+.manageButton:hover:not(:disabled) {
+  background: #5940d9;
+  transform: translateY(-2px);
+}
+
+.manageButton {
+  width: 100%;
+}
+
+.primaryButton:disabled,
+.manageButton:disabled {
+  opacity: 0.6;
   cursor: not-allowed;
-  transform: none;
 }
 
-/* Presentation Card Containers */
-
-.presentations > div {
-  margin-bottom: 24px;
+.managementSection {
+  margin-top: 32px;
+  padding: 28px;
+  border: 1px solid #e6e1ff;
+  border-radius: 16px;
+  background: #f9f8ff;
 }
 
-/* Responsive Design */
+.managementSection h2 {
+  margin-bottom: 20px;
+  color: var(--color-text);
+  font-size: 21px;
+  font-weight: 800;
+}
+
+.managementContent {
+  display: grid;
+  gap: 24px;
+}
+
+.formSection {
+  margin-top: 24px;
+  padding: 24px;
+  border: 1px solid var(--color-border);
+  border-radius: 16px;
+  background: #fcfbff;
+}
+
+.emptyState {
+  padding: 32px 20px;
+  border: 1px dashed #d8d0ff;
+  border-radius: 14px;
+  background: #fcfbff;
+  color: var(--color-text-muted);
+  font-size: 14px;
+  text-align: center;
+}
+
+.errorMessage {
+  padding: 14px 16px;
+  border-radius: 10px;
+  background: #fef2f2;
+  color: var(--color-error);
+  font-size: 13px;
+}
+
+.infoMessage {
+  color: var(--color-text-muted);
+  font-size: 14px;
+}
 
 @media (max-width: 768px) {
   .dashboard {
-    padding: 24px 16px;
+    padding: 28px 16px 56px;
   }
 
-  .heading h1 {
-    font-size: 2rem;
+  .heading {
+    flex-direction: column;
+    align-items: flex-start;
   }
 
   .presentations {
+    padding: 22px;
+  }
+
+  .presentationGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .managementSection {
+    padding: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .sectionHeader {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .primaryButton {
+    width: 100%;
+  }
+
+  .logoutButton {
+    width: 100%;
+  }
+
+  .presentationCard {
     padding: 20px;
   }
 
-  .presentations button {
-    width: 100%;
-    margin: 8px 0;
+  .formSection {
+    padding: 16px;
   }
 }

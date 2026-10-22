@@ -1,0 +1,92 @@
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+}
+
+.title {
+  margin: 0 0 8px;
+  color: var(--color-text);
+  font-family: var(--heading);
+  font-size: 21px;
+  font-weight: 800;
+}
+
+.label {
+  color: var(--color-text);
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.input {
+  width: 100%;
+  padding: 14px 16px;
+  border: 1px solid var(--color-border);
+  border-radius: 11px;
+  background: #ffffff;
+  color: var(--color-text);
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.input:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(114, 85, 246, 0.12);
+}
+
+.input::placeholder {
+  color: #9999aa;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.saveButton {
+  padding: 12px 22px;
+  border: 1px solid var(--color-primary);
+  border-radius: 11px;
+  background: var(--color-primary);
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 700;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.saveButton:hover {
+  background: #5940d9;
+  transform: translateY(-2px);
+}
+
+.cancelButton {
+  padding: 12px 22px;
+  border: 1px solid var(--color-border);
+  border-radius: 11px;
+  background: #ffffff;
+  color: var(--color-text-muted);
+  font-size: 14px;
+  font-weight: 700;
+  transition: border-color 0.2s ease, color 0.2s ease;
+}
+
+.cancelButton:hover {
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+}
+
+@media (max-width: 480px) {
+  .actions {
+    flex-direction: column;
+  }
+
+  .saveButton,
+  .cancelButton {
+    width: 100%;
+  }
+}

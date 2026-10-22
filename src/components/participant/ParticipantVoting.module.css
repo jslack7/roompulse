@@ -1,0 +1,205 @@
+
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
+  padding: 24px;
+  border: 1px solid #eae9f3;
+  border-radius: 16px;
+  background: #ffffff;
+}
+
+.heading {
+  margin: 0;
+  color: #7255f6;
+  font-family: var(--heading);
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.question {
+  margin: 0;
+  color: #17162e;
+  font-family: var(--heading);
+  font-size: 23px;
+  font-weight: 800;
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.choices {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.choice {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+  padding: 16px 18px;
+  border: 2px solid #eae6ff;
+  border-radius: 12px;
+  background: #fcfbff;
+  color: #17162e;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: border-color 0.2s ease, background-color 0.2s ease;
+}
+
+.choice:hover {
+  border-color: #b5a4ff;
+  background: #f6f2ff;
+}
+
+.choiceSelected {
+  border-color: #7255f6;
+  background: #f0ecff;
+}
+
+.choice:focus-within {
+  outline: 3px solid rgba(114, 85, 246, 0.2);
+  outline-offset: 2px;
+}
+
+.choiceInput {
+  flex-shrink: 0;
+  width: 18px;
+  height: 18px;
+  margin: 0;
+  accent-color: #7255f6;
+  cursor: pointer;
+}
+
+.choiceText {
+  flex: 1;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.submitButton {
+  width: 100%;
+  margin-top: 8px;
+  padding: 14px 20px;
+  border: 1px solid #7255f6;
+  border-radius: 11px;
+  background: #7255f6;
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 700;
+  box-shadow: 0 7px 18px rgba(114, 85, 246, 0.16);
+}
+
+.submitButton:hover:not(:disabled) {
+  background: #5940d9;
+  transform: translateY(-2px);
+}
+
+.submitButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.waitingCard {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 24px;
+  border: 1px dashed #d8d0ff;
+  border-radius: 16px;
+  background: #fcfbff;
+  text-align: center;
+}
+
+.waitingTitle {
+  margin: 0;
+  color: #17162e;
+  font-family: var(--heading);
+  font-size: 21px;
+  font-weight: 800;
+}
+
+.message {
+  margin: 0;
+  color: #77778d;
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+.successCard {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 24px;
+  border: 1px solid #d8f5e9;
+  border-radius: 14px;
+  background: #f7fffb;
+  text-align: center;
+}
+
+.successIcon {
+  align-self: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: #e1faf3;
+  color: #16856e;
+  font-size: 26px;
+  font-weight: 800;
+}
+
+.successTitle {
+  margin: 0;
+  color: #16856e;
+  font-family: var(--heading);
+  font-size: 21px;
+  font-weight: 800;
+}
+
+.errorMessage {
+  margin: 0;
+  padding: 14px 16px;
+  border-radius: 10px;
+  background: #fef2f2;
+  color: #dc2626;
+  font-size: 13px;
+}
+
+.loadingMessage {
+  margin: 0;
+  padding: 20px;
+  color: #77778d;
+  font-size: 14px;
+}
+
+@media (max-width: 600px) {
+  .container {
+    padding: 18px;
+  }
+
+  .question {
+    font-size: 20px;
+  }
+
+  .choice {
+    padding: 14px;
+  }
+}

@@ -1,0 +1,35 @@
+
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+}
+
+.icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  background: #f0ecff;
+  color: var(--color-primary);
+}
+
+.title {
+  margin: 0;
+  color: var(--color-text);
+  font-family: var(--heading);
+  font-size: 19px;
+  font-weight: 800;
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+}
+
+.description {
+  margin: 0;
+  color: var(--color-text-muted);
+  font-size: 13px;
+  line-height: 1.7;
+}

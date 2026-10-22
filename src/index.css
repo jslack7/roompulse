@@ -1,57 +1,53 @@
 
-/* =========================================
-   RoomPulse - Global Design System
-   ========================================= */
-
-@import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Manrope:wght@400;500;600;700;800&display=swap");
 
 :root {
-  /* Brand Colors */
-  --color-primary: #172554;
-  --color-secondary: #3B82F6;
-  --color-lavender: #A78BFA;
-  --color-mint: #5EEAD4;
+ 
+  --color-primary: #7255F6;
+  --color-secondary: #6094FF;
+  --color-lavender: #9976FB;
+  --color-mint: #36D6BC;
 
-  /* Background Colors */
-  --color-background: #F8FAFC;
+ 
+  --color-background: #F8F7FF;
   --color-surface: #FFFFFF;
 
-  /* Text Colors */
-  --color-text: #1E293B;
-  --color-text-muted: #64748B;
+ 
+  --color-text: #17162E;
+  --color-text-muted: #77778D;
 
-  /* Borders */
-  --color-border: #E2E8F0;
+ 
+  --color-border: #EAE9F3;
 
-  /* Status Colors */
-  --color-success: #059669;
+
+  --color-success: #159E85;
   --color-error: #DC2626;
 
-  /* Reusable Design */
+ 
   --border-radius: 12px;
-  --card-radius: 16px;
-  --shadow-card: 0 4px 16px rgba(23, 37, 84, 0.08);
+  --card-radius: 19px;
+  --shadow-card: 0 12px 32px rgba(52, 38, 110, 0.08);
 
-  /* Compatibility with existing styles */
+  
   --text: var(--color-text);
-  --text-h: var(--color-primary);
+  --text-h: var(--color-text);
   --bg: var(--color-background);
   --border: var(--color-border);
-  --code-bg: #EFF6FF;
-  --accent: var(--color-secondary);
-  --accent-bg: rgba(59, 130, 246, 0.1);
-  --accent-border: rgba(59, 130, 246, 0.5);
-  --social-bg: #F1F5F9;
+  --code-bg: #F0ECFF;
+  --accent: var(--color-primary);
+  --accent-bg: rgba(114, 85, 246, 0.1);
+  --accent-border: rgba(114, 85, 246, 0.5);
+  --social-bg: #F0ECFF;
   --shadow: var(--shadow-card);
 
-  /* Typography */
-  --sans: "Plus Jakarta Sans", Arial, Helvetica, sans-serif;
-  --heading: "Plus Jakarta Sans", Arial, Helvetica, sans-serif;
+ 
+  --sans: "DM Sans", Arial, Helvetica, sans-serif;
+  --heading: "Manrope", Arial, Helvetica, sans-serif;
   --mono: ui-monospace, Consolas, monospace;
 
   font-family: var(--sans);
   font-size: 16px;
-  line-height: 1.5;
+  line-height: 1.6;
   color: var(--color-text);
   background-color: var(--color-background);
 
@@ -62,9 +58,7 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* =========================================
-   Global Reset
-   ========================================= */
+
 
 *,
 *::before,
@@ -80,60 +74,58 @@ body {
   color: var(--color-text);
 }
 
-/* =========================================
-   React Root
-   ========================================= */
+
 
 #root {
   width: 100%;
   min-height: 100vh;
 }
 
-/* =========================================
-   Typography
-   ========================================= */
+
 
 h1,
 h2,
 h3,
 h4 {
   font-family: var(--heading);
-  color: var(--color-primary);
+  color: var(--color-text);
   line-height: 1.25;
+  letter-spacing: -0.035em;
 }
 
 h1 {
   font-size: 2.5rem;
-  font-weight: 700;
+  font-weight: 800;
   margin: 0 0 1rem;
 }
 
 h2 {
   font-size: 1.75rem;
-  font-weight: 600;
+  font-weight: 800;
   margin: 0 0 0.75rem;
 }
 
 h3 {
   font-size: 1.25rem;
-  font-weight: 600;
+  font-weight: 700;
 }
 
 p {
   margin: 0 0 1rem;
 }
 
-/* =========================================
-   Buttons
-   ========================================= */
+
 
 button {
   font-family: inherit;
   font-size: 0.95rem;
-  font-weight: 600;
+  font-weight: 700;
   cursor: pointer;
   border-radius: var(--border-radius);
-  transition: background-color 0.2s ease;
+  transition:
+    background-color 0.2s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
 button:disabled {
@@ -141,9 +133,7 @@ button:disabled {
   cursor: not-allowed;
 }
 
-/* =========================================
-   Form Elements
-   ========================================= */
+
 
 input,
 select,
@@ -152,12 +142,9 @@ textarea {
   font-size: 1rem;
 }
 
-/* =========================================
-   Links
-   ========================================= */
 
 a {
-  color: var(--color-secondary);
+  color: var(--color-primary);
   text-decoration: none;
 }
 
@@ -165,9 +152,7 @@ a:hover {
   text-decoration: underline;
 }
 
-/* =========================================
-   Code
-   ========================================= */
+
 
 code {
   font-family: var(--mono);
@@ -178,9 +163,7 @@ code {
   background-color: var(--code-bg);
 }
 
-/* =========================================
-   Responsive Typography
-   ========================================= */
+
 
 @media (max-width: 768px) {
   h1 {
@@ -189,5 +172,11 @@ code {
 
   h2 {
     font-size: 1.5rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  button {
+    transition: none;
   }
 }

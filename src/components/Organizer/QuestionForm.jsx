@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { supabase } from "../../services/supabaseClient";
-
+import styles from "./QuestionForm.module.css";
 
 function QuestionForm({ presentationId }) {
 
@@ -88,54 +88,79 @@ function QuestionForm({ presentationId }) {
   }
   }
 
+  
   return (
-    <form onSubmit={handleSubmit}>
-      <h3>Create a Question</h3>
+    <form className={styles.form} onSubmit={handleSubmit}>
+      <h3 className={styles.title}>Create a Question</h3>
 
-      <label htmlFor="questionText">Question</label>
+      <div>
+        <label className={styles.label} htmlFor="questionText">
+          Question
+        </label>
 
-      <input
-        type="text"
-        id="questionText"
-        placeholder="Enter your question"
-        value={questionText}
-        onChange={(event) => setQuestionText(event.target.value)}
-      />
+        <input
+          className={styles.input}
+          type="text"
+          id="questionText"
+          placeholder="Enter your question"
+          value={questionText}
+          onChange={(event) => setQuestionText(event.target.value)}
+        />
+      </div>
 
-      <h4>Answer Choices</h4>
+      <h4 className={styles.choicesTitle}>Answer Choices</h4>
 
-      {choices.map((choice, index) => (
-        <div key={index}>
-          <label htmlFor={`choice-${index}`}>
-            Choice {index +1}
-          </label>
+      <div className={styles.choicesList}>
+        {choices.map((choice, index) => (
+          <div className={styles.choiceRow} key={index}>
+            <label
+              className={styles.label}
+              htmlFor={`choice-${index}`}
+            >
+              Choice {index + 1}
+            </label>
 
-          <input  
-            type="text"
-            id={`choice-${index}`}
-            value={choice}
-            onChange={(event) => 
-              handleChoiceChange(index, event.target.value)
-            }
-          />
+            <div className={styles.choiceControls}>
+              <input
+                className={styles.input}
+                type="text"
+                id={`choice-${index}`}
+                value={choice}
+                onChange={(event) =>
+                  handleChoiceChange(index, event.target.value)
+                }
+              />
 
-          <button 
-            type="button"
-            onClick={() => handleRemoveChoice(index)}
-            disabled={choices.length <= 2}
-          >
-            Remove
-          </button>
-        </div>
-      ))}
+              <button
+                className={styles.removeButton}
+                type="button"
+                onClick={() => handleRemoveChoice(index)}
+                disabled={choices.length <= 2}
+              >
+                Remove
+              </button>
+            </div>
+          </div>
+        ))}
+      </div>
 
-      <button type="button" onClick={handleAddChoice}>
-        Add Choice
-      </button>
+      <div className={styles.actions}>
+        <button
+          className={styles.addButton}
+          type="button"
+          onClick={handleAddChoice}
+        >
+          + Add Choice
+        </button>
 
-      <button type="submit" disabled={isSaving}>
-        {isSaving ? "Saving..." : "Save Question"}
-      </button>
+        <button
+          className={styles.saveButton}
+          type="submit"
+          disabled={isSaving}
+        >
+          {isSaving ? "Saving..." : "Save Question"}
+        </button>
+      </div>
     </form>
   );
 }

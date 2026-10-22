@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { supabase } from "../../services/supabaseClient";
-
+import styles from "./SurveyForm.module.css";
 function SurveyForm({ onCancel, onPresentationCreated }) {
   const [title, setTitle] = useState("");
 
@@ -46,31 +46,43 @@ function SurveyForm({ onCancel, onPresentationCreated }) {
   }
 
 
-
   return (
-   <form onSubmit={handleSubmit}>
-    <h3>Create New Presentation</h3>
+    <form className={styles.form} onSubmit={handleSubmit}>
+      <h3 className={styles.title}>Create New Presentation</h3>
 
-    <label htmlFor="presentationTitle">
-      Presentation Title
-    </label>
+      <label
+        className={styles.label}
+        htmlFor="presentationTitle"
+      >
+        Presentation Title
+      </label>
 
-    <input 
-      type="text"
-      id="presentationTitle"
-      placeholder="Enter Presentation title"
-      value={title}
-      onChange={(event) => setTitle(event.target.value)}
-    />
+      <input
+        className={styles.input}
+        type="text"
+        id="presentationTitle"
+        placeholder="Enter presentation title"
+        value={title}
+        onChange={(event) => setTitle(event.target.value)}
+      />
 
-    <button type="submit">
-      Save Presentation
-    </button>
+      <div className={styles.actions}>
+        <button
+          className={styles.saveButton}
+          type="submit"
+        >
+          Save Presentation
+        </button>
 
-    <button type="button" onClick={onCancel}>
-      Cancel
-    </button>
-   </form>
+        <button
+          className={styles.cancelButton}
+          type="button"
+          onClick={onCancel}
+        >
+          Cancel
+        </button>
+      </div>
+    </form>
   );
 }
 

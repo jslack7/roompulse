@@ -1,10 +1,15 @@
 
 import { useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import { supabase } from "../../services/supabaseClient";
 import ParticipantVoting from "./ParticipantVoting";
+import styles from "./ParticipantJoin.module.css";
 
 function ParticipantJoin() {
-  const [sessionCode, setSessionCode] = useState("");
+  const [searchParams] = useSearchParams();
+  const [sessionCode, setSessionCode] = useState(
+    searchParams.get("session") ?? ""
+  );
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [joinedPresentation, setJoinedPresentation] = useState(null);
@@ -78,40 +83,75 @@ function ParticipantJoin() {
     }
   }
 
+  
   return (
-    <div>
-      <h2>Join a Session</h2>
-      <p>Enter your session code to participate in a live poll.</p>
+    <div className={styles.page}>
+      <div className={styles.container}>
+        <div className={styles.card}>
+          <p className={styles.brand}>RoomPulse</p>
 
-      <form onSubmit={handleJoin}>
-        <label htmlFor="sessionCode">Session Code</label>
+          <h2 className={styles.title}>Join a Session</h2>
 
-        <input
-          id="sessionCode"
-          type="text"
-          value={sessionCode}
-          onChange={(event) => setSessionCode(event.target.value)}
-          placeholder="Enter session code"
-        />
+          <p className={styles.description}>
+            Enter your session code to participate in a live poll.
+          </p>
 
-        <button type="submit" disabled={isLoading}>
-          {isLoading ? "Joining..." : "Join Session"}
-        </button>
-      </form>
+          <form className={styles.form} onSubmit={handleJoin}>
+            <label className={styles.label} htmlFor="sessionCode">
+              Session Code
+            </label>
 
-      {error && <p role="alert">{error}</p>}
+            <input
+              className={styles.input}
+              id="sessionCode"
+              type="text"
+              value={sessionCode}
+              onChange={(event) => setSessionCode(event.target.value)}
+              placeholder="Enter session code"
+            />
 
-      {joinedPresentation && (
-        <div>
-          <h3>Successfully Joined!</h3>
-          <p>Presentation: {joinedPresentation.title}</p>
-          <p>Session Status: Live</p>
+            <button
+              className={styles.joinButton}
+              type="submit"
+              disabled={isLoading}
+            >
+              {isLoading ? "Joining..." : "Join Session"}
+            </button>
+          </form>
 
-          <ParticipantVoting presentationId={joinedPresentation.id} />
+          {error && (
+            <p className={styles.errorMessage} role="alert">
+              {error}
+            </p>
+          )}
         </div>
-      )}
+
+        {joinedPresentation && (
+          <div className={styles.successCard}>
+            <h3 className={styles.successTitle}>
+              Successfully Joined!
+            </h3>
+
+            <p className={styles.presentationName}>
+              <strong>Presentation:</strong> {joinedPresentation.title}
+            </p>
+
+            <span className={styles.liveBadge}>
+              <span className={styles.liveDot} />
+              Session Live
+            </span>
+
+            <div className={styles.votingSection}>
+              <ParticipantVoting
+                presentationId={joinedPresentation.id}
+              />
+            </div>
+          </div>
+        )}
+      </div>
     </div>
   );
 }
+
 
 export default ParticipantJoin;

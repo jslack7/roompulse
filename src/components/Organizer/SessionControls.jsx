@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { supabase } from "../../services/supabaseClient";
+import styles from "./SessionControls.module.css";
 
 function SessionControls({
   presentationId,
@@ -62,31 +63,43 @@ function SessionControls({
       
   }
 
+  
   return (
-    <div>
-      <h2>Session Controls</h2>
+    <div className={styles.container}>
+      <h2 className={styles.title}>Session Controls</h2>
 
-      <p>
-        Session Status: {isLive ? "Live" : "Not Live"}
-      </p>
+      <div className={styles.statusRow}>
+        <p className={styles.statusLabel}>Session Status:</p>
 
+        <span
+          className={
+            isLive ? styles.statusLive : styles.statusInactive
+          }
+        >
+          <span className={styles.statusDot} />
+          {isLive ? "Live" : "Not Live"}
+        </span>
+      </div>
 
-      <button
-        type="button"
-        onClick={() => handleSessionChange(true)}
-        disabled={isUpdating || isLive}
-      >
-        Start Session
-      </button>
+      <div className={styles.actions}>
+        <button
+          className={styles.startButton}
+          type="button"
+          onClick={() => handleSessionChange(true)}
+          disabled={isUpdating || isLive}
+        >
+          {isUpdating ? "Updating..." : "Start Session"}
+        </button>
 
-      <button
-        type="button"
-        onClick={() => handleSessionChange(false)}
-        disabled={isUpdating || !isLive}
-      >
-        End Session
-      </button>
-
+        <button
+          className={styles.endButton}
+          type="button"
+          onClick={() => handleSessionChange(false)}
+          disabled={isUpdating || !isLive}
+        >
+          {isUpdating ? "Updating..." : "End Session"}
+        </button>
+      </div>
     </div>
   );
 }

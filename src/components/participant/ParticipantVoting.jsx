@@ -1,6 +1,7 @@
 
 import { useEffect, useState } from "react";
 import { supabase } from "../../services/supabaseClient";
+import styles from "./ParticipantVoting.module.css";
 
 function ParticipantVoting({ presentationId }) {
 
@@ -181,7 +182,7 @@ function ParticipantVoting({ presentationId }) {
       if (voteError) {
         console.error("Error submitting vote:", voteError);
 
-        // PostgreSQL unique constraint violation
+        
         if (voteError.code === "23505") {
           setError("You have already voted on this question.");
         } else {
@@ -191,7 +192,7 @@ function ParticipantVoting({ presentationId }) {
         return;
       }
 
-      // Vote was saved successfully
+      
       setHasVoted(true);
 
     } catch (unexpectedError) {
@@ -205,67 +206,96 @@ function ParticipantVoting({ presentationId }) {
 
 
 
+  
   if (isLoading) {
-    return <p>Loading active question...</p>;
+    return (
+      <p className={styles.loadingMessage}>
+        Loading active question...
+      </p>
+    );
   }
-
 
   if (error && !question) {
-    return <p role="alert">{error}</p>;
+    return (
+      <p className={styles.errorMessage} role="alert">
+        {error}
+      </p>
+    );
   }
 
-  
   if (!question) {
     return (
-      <div>
-        <h2>Waiting for a Question</h2>
-        <p>The organizer hasn't activated a question yet.</p>
+      <div className={styles.waitingCard}>
+        <h2 className={styles.waitingTitle}>
+          Waiting for a Question
+        </h2>
+
+        <p className={styles.message}>
+          The organizer hasn't activated a question yet.
+        </p>
       </div>
     );
   }
 
-
- 
-
   return (
-    <div>
-      <h2>Live Question</h2>
+    <div className={styles.container}>
+      <h2 className={styles.heading}>Live Question</h2>
 
-      <h3>{question.text}</h3>
+      <h3 className={styles.question}>
+        {question.text}
+      </h3>
 
       {hasVoted ? (
-       
-        <div>
-          <h3>Vote Submitted!</h3>
-          <p>Thank you for participating in RoomPulse.</p>
+        <div className={styles.successCard}>
+          <div className={styles.successIcon}>✓</div>
+
+          <h3 className={styles.successTitle}>
+            Vote Submitted!
+          </h3>
+
+          <p className={styles.message}>
+            Thank you for participating in RoomPulse.
+          </p>
         </div>
       ) : (
-        
-        <form onSubmit={handleSubmitVote}>
+        <form
+          className={styles.form}
+          onSubmit={handleSubmitVote}
+        >
+          <fieldset
+            className={styles.choices}
+            aria-label="Answer choices"
+          >
+            {choices.map((choice) => (
+              <label
+                key={choice.id}
+                className={`${styles.choice} ${
+                  selectedChoiceId === choice.id
+                    ? styles.choiceSelected
+                    : ""
+                }`}
+              >
+                <input
+                  className={styles.choiceInput}
+                  type="radio"
+                  name="pollAnswer"
+                  value={choice.id}
+                  checked={selectedChoiceId === choice.id}
+                  onChange={() =>
+                    setSelectedChoiceId(choice.id)
+                  }
+                  disabled={isSubmitting}
+                />
 
-          {choices.map((choice) => (
-            <label
-              key={choice.id}
-              style={{
-                display: "block",
-                marginBottom: "12px",
-              }}
-            >
-              <input
-                type="radio"
-                name="pollAnswer"
-                value={choice.id}
-                checked={selectedChoiceId === choice.id}
-                onChange={() => setSelectedChoiceId(choice.id)}
-                disabled={isSubmitting}
-              />
-
-              {" "}
-              {choice.label}
-            </label>
-          ))}
+                <span className={styles.choiceText}>
+                  {choice.label}
+                </span>
+              </label>
+            ))}
+          </fieldset>
 
           <button
+            className={styles.submitButton}
             type="submit"
             disabled={isSubmitting || !selectedChoiceId}
           >
@@ -274,7 +304,11 @@ function ParticipantVoting({ presentationId }) {
         </form>
       )}
 
-      {error && <p role="alert">{error}</p>}
+      {error && (
+        <p className={styles.errorMessage} role="alert">
+          {error}
+        </p>
+      )}
     </div>
   );
 }
