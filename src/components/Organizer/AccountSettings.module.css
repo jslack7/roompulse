@@ -1,0 +1,136 @@
+
+/* Main Account Settings container */
+.settings {
+  margin-top: 2rem;
+  padding: 1rem;
+  background-color: #ffffff;
+  border-radius: 14px;
+}
+
+/* Collapsible settings button */
+.settingsToggle {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 1rem 1.25rem;
+  border: none;
+  border-radius: 10px;
+  background-color: #f8f0f5;
+  color: #65004f;
+  font: inherit;
+  font-size: 1.1rem;
+  font-weight: 600;
+  text-align: left;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.settingsToggle:hover:not(:disabled) {
+  background-color: #f2e1ec;
+}
+
+.settingsToggle:focus-visible {
+  outline: 2px solid #65004f;
+  outline-offset: 3px;
+}
+
+.settingsToggle:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+/* Expanded deletion section */
+.dangerZone {
+  margin-top: 1rem;
+  padding: 1.5rem;
+  border: 1px solid #e6a3a3;
+  border-radius: 12px;
+  background-color: #fff8f8;
+}
+
+.dangerZone h3 {
+  margin-bottom: 0.75rem;
+  color: #a52a2a;
+}
+
+.dangerZone p {
+  margin-bottom: 1rem;
+  line-height: 1.6;
+}
+
+/* Deletion form */
+.dangerZone form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  max-width: 450px;
+}
+
+.dangerZone label {
+  font-weight: 600;
+}
+
+.dangerZone input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0.8rem;
+  border: 1px solid #cccccc;
+  border-radius: 8px;
+  background-color: #ffffff;
+  font: inherit;
+}
+
+.dangerZone input:focus {
+  outline: 2px solid #65004f;
+  outline-offset: 2px;
+}
+
+/* Delete button */
+.deleteButton {
+  margin-top: 0.75rem;
+  padding: 0.85rem 1.25rem;
+  border: none;
+  border-radius: 8px;
+  background-color: #b42318;
+  color: #ffffff;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.deleteButton:hover:not(:disabled) {
+  background-color: #8f1c13;
+}
+
+.deleteButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Error messages */
+.error {
+  color: #a52a2a;
+  font-weight: 600;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 576px) {
+  .settings {
+    padding: 0.75rem;
+  }
+
+  .settingsToggle {
+    padding: 0.9rem 1rem;
+    font-size: 1rem;
+  }
+
+  .dangerZone {
+    padding: 1rem;
+  }
+
+  .deleteButton {
+    width: 100%;
+  }
+}
