@@ -1,6 +1,6 @@
 import styles from "./SurveyCard.module.css";
 
-function SurveyCard({ title }) {
+function SurveyCard({ title, isLive, onDelete }) {
   return (
     <div className={styles.card}>
       <div className={styles.icon} aria-hidden="true">
@@ -24,6 +24,15 @@ function SurveyCard({ title }) {
       <p className={styles.description}>
         Manage your presentation here.
       </p>
+
+      <button
+        type="button"
+        className={styles.deleteButton}
+        onClick={onDelete}
+        disabled={isLive}
+      >
+        Delete Presentation
+      </button>
     </div>
   );
 }

@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import styles from "./OrganizerDashboard.module.css";
 import SurveyForm from "./SurveyForm";
@@ -11,116 +12,201 @@ import QuestionList from "./QuestionList";
 import ResultsChart from "../Shared/ResultsChart";
 
 function OrganizerDashboard() {
-    const navigate = useNavigate();
+  const navigate = useNavigate();
 
-    const [showForm, setShowForm] = useState(false);
-    const [selectedPresentationId, setSelectedPresentationId] = useState(null);
-    const [questionRefreshKey, setQuestionRefreshKey] = useState(0);
-    const [activeQuestionId, setActiveQuestionId] = useState(null);
-    const [presentations, setPresentations] = useState([]);
-    const [isLoading, setIsLoading] = useState(true);
-    const [authMessage, setAuthMessage] = useState("");
-    const [fetchError, setFetchError] = useState("");
+  const [showForm, setShowForm] = useState(false);
+  const [selectedPresentationId, setSelectedPresentationId] = useState(null);
+  const [questionRefreshKey, setQuestionRefreshKey] = useState(0);
+  const [activeQuestionId, setActiveQuestionId] = useState(null);
+  const [presentations, setPresentations] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [authMessage, setAuthMessage] = useState("");
+  const [fetchError, setFetchError] = useState("");
+  const [deletingPresentationId, setDeletingPresentationId] = useState(null);
 
-    async function handleLogout() {
-        const { error } = await supabase.auth.signOut();
+  async function handleLogout() {
+    const { error } = await supabase.auth.signOut();
 
-        if (error) {
-            console.error("Logout error:", error);
-            alert("Unable to log out. Please try again.");
-            return;
+    if (error) {
+      console.error("Logout error:", error);
+      alert("Unable to log out. Please try again.");
+      return;
     }
 
-  navigate("/login", { replace: true });
-}
+    navigate("/login", { replace: true });
+  }
 
-    function handlePresentationCreated(newPresentation) {
-       setPresentations((previousPresentations) => {
-        const alreadyExists = previousPresentations.some(
-            (presentation) => presentation.id === newPresentation.id
-        );
+  function handlePresentationCreated(newPresentation) {
+    setPresentations((previousPresentations) => {
+      const alreadyExists = previousPresentations.some(
+        (presentation) => presentation.id === newPresentation.id
+      );
 
-        if (alreadyExists) {
-            return previousPresentations;
-        }
-
-        return [...previousPresentations, newPresentation];
-       });
-
-       setShowForm(false);
-    }
-
-    async function fetchActiveQuestion(presentationId) {
-        const { data, error } = await supabase  
-            .from("presentations")
-            .select("active_question_id")
-            .eq("id", presentationId)
-            .single();
-
-        if (error) {
-            console.error("Error fetching active question:", error);
-            setActiveQuestionId(null);
-            return;
-        }
-
-        setActiveQuestionId(data.active_question_id);
-    }
-
-    useEffect(() => {
-        async function fetchPresentations() {
-
-            const { data: userData, error: userError } =
-                await supabase.auth.getUser();
-            if (userError || !userData.user) {
-                console.log("No authenticated organizer found.");
-                setAuthMessage("Please sign in to view your presentations.");
-                setIsLoading(false);
-                return;
-            }
-
-            const { data, error } = await supabase
-                .from("presentations")
-                .select("*")
-                .eq("owner_id", userData.user.id);
-
-            if (error) {
-                setFetchError("Unable to load presentations. Please try again.");
-            } else {
-                setPresentations(data);
-            }
-
-            setIsLoading(false);
-        }
-
-        fetchPresentations();
-    }, []);
-
-    useEffect(() => {
-        if (!selectedPresentationId) return;
-
-        const channel = supabase
-    .channel(`dashboard-presentation-${selectedPresentationId}`)
-    .on(
-      "postgres_changes",
-      {
-        event: "UPDATE",
-        schema: "public",
-        table: "presentations",
-        filter: `id=eq.${selectedPresentationId}`,
-      },
-      (payload) => {
-        setActiveQuestionId(payload.new.active_question_id);
+      if (alreadyExists) {
+        return previousPresentations;
       }
-    )
-    .subscribe();
 
-  return () => {
-    supabase.removeChannel(channel);
-  };
-}, [selectedPresentationId]);
+      return [...previousPresentations, newPresentation];
+    });
 
-    
-   
+    setShowForm(false);
+  }
+
+  async function fetchActiveQuestion(presentationId) {
+    const { data, error } = await supabase
+      .from("presentations")
+      .select("active_question_id")
+      .eq("id", presentationId)
+      .single();
+
+    if (error) {
+      console.error("Error fetching active question:", error);
+      setActiveQuestionId(null);
+      return;
+    }
+
+    setActiveQuestionId(data.active_question_id);
+  }
+
+  async function handleDeletePresentation(presentationId) {
+    if (deletingPresentationId !== null) {
+      return;
+    }
+
+    const confirmed = window.confirm(
+      "Are you sure you want to permanently delete this presentation? This action cannot be undone."
+    );
+
+    if (!confirmed) {
+      return;
+    }
+
+    setDeletingPresentationId(presentationId);
+
+    try {
+      const { data: userData, error: userError } =
+        await supabase.auth.getUser();
+
+      if (userError || !userData.user) {
+        alert("Please sign in before deleting a presentation.");
+        return;
+      }
+
+      const { data: presentation, error: checkError } = await supabase
+        .from("presentations")
+        .select("id, is_live, owner_id")
+        .eq("id", presentationId)
+        .eq("owner_id", userData.user.id)
+        .single();
+
+      if (checkError || !presentation) {
+        alert("Unable to verify this presentation. Please try again.");
+        return;
+      }
+
+      if (presentation.is_live) {
+        alert("You cannot delete a presentation while it is running.");
+        return;
+      }
+
+      const { data: deletedPresentation, error: deleteError } = await supabase
+        .from("presentations")
+        .delete()
+        .eq("id", presentationId)
+        .eq("owner_id", userData.user.id)
+        .eq("is_live", false)
+        .select("id")
+        .maybeSingle();
+
+      if (deleteError) {
+        console.error("Error deleting presentation:", deleteError);
+        alert("Unable to delete presentation. Please try again.");
+        return;
+      }
+
+      if (!deletedPresentation) {
+        alert(
+          "The presentation was not deleted. It may be running or you may not have permission."
+        );
+        return;
+      }
+
+      setPresentations((previousPresentations) =>
+        previousPresentations.filter(
+          (item) => item.id !== presentationId
+        )
+      );
+
+      if (selectedPresentationId === presentationId) {
+        setSelectedPresentationId(null);
+        setActiveQuestionId(null);
+      }
+    } finally {
+      setDeletingPresentationId(null);
+    }
+  }
+
+  useEffect(() => {
+    async function fetchPresentations() {
+      const { data: userData, error: userError } =
+        await supabase.auth.getUser();
+
+      if (userError || !userData.user) {
+        console.log("No authenticated organizer found.");
+        setAuthMessage("Please sign in to view your presentations.");
+        setIsLoading(false);
+        return;
+      }
+
+      const { data, error } = await supabase
+        .from("presentations")
+        .select("*")
+        .eq("owner_id", userData.user.id);
+
+      if (error) {
+        setFetchError("Unable to load presentations. Please try again.");
+      } else {
+        setPresentations(data);
+      }
+
+      setIsLoading(false);
+    }
+
+    fetchPresentations();
+  }, []);
+
+  useEffect(() => {
+    if (!selectedPresentationId) return;
+
+    const channel = supabase
+      .channel(`dashboard-presentation-${selectedPresentationId}`)
+      .on(
+        "postgres_changes",
+        {
+          event: "UPDATE",
+          schema: "public",
+          table: "presentations",
+          filter: `id=eq.${selectedPresentationId}`,
+        },
+        (payload) => {
+          setActiveQuestionId(payload.new.active_question_id);
+
+          setPresentations((previousPresentations) =>
+            previousPresentations.map((presentation) =>
+              presentation.id === payload.new.id
+                ? { ...presentation, ...payload.new }
+                : presentation
+            )
+          );
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [selectedPresentationId]);
+
   return (
     <div className={styles.dashboard}>
       <div className={styles.heading}>
@@ -186,9 +272,17 @@ function OrganizerDashboard() {
               }`}
               key={presentation.id}
             >
-              <SurveyCard title={presentation.title} />
+              <SurveyCard
+                title={presentation.title}
+                isLive={
+                  presentation.is_live ||
+                  deletingPresentationId === presentation.id
+                }
+                onDelete={() =>
+                  handleDeletePresentation(presentation.id)
+                }
+              />
 
-              
               <button
                 className={styles.manageButton}
                 type="button"
@@ -203,27 +297,24 @@ function OrganizerDashboard() {
                   }
                 }}
               >
-              {selectedPresentationId === presentation.id
-                ? "Close Management"
-                : "Manage Presentation"}
+                {selectedPresentationId === presentation.id
+                  ? "Close Management"
+                  : "Manage Presentation"}
               </button>
 
-
-              
               <button
                 className={styles.openPresentationButton}
                 type="button"
                 onClick={() => {
                   window.open(
-                  `/present/${presentation.id}`,
-                  "_blank",
-                  "noopener,noreferrer"
+                    `/present/${presentation.id}`,
+                    "_blank",
+                    "noopener,noreferrer"
                   );
                 }}
               >
                 Open Presentation
               </button>
-              
             </div>
           ))}
         </div>
@@ -265,6 +356,23 @@ function OrganizerDashboard() {
                     (previous) => previous + 1
                   );
                   fetchActiveQuestion(selectedPresentationId);
+
+                  supabase
+                    .from("presentations")
+                    .select("*")
+                    .eq("id", selectedPresentationId)
+                    .single()
+                    .then(({ data, error }) => {
+                      if (!error && data) {
+                        setPresentations((previousPresentations) =>
+                          previousPresentations.map((presentation) =>
+                            presentation.id === data.id
+                              ? data
+                              : presentation
+                          )
+                        );
+                      }
+                    });
                 }}
               />
 
@@ -277,7 +385,6 @@ function OrganizerDashboard() {
       </section>
     </div>
   );
- 
-}    
+}
 
 export default OrganizerDashboard;
